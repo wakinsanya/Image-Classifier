@@ -1,0 +1,26 @@
+<app-header></app-header>
+<div class="home-container">
+  <div class="home__options-wrap">
+    <div class="home__options-card-wrap">
+      <mat-card [routerLink]="['classifier/image']">
+        <mat-card-content>
+          <div>
+            <mat-icon svgIcon="image"></mat-icon>
+          </div>
+          Upload Image
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="home__options-card-wrap">
+      <mat-card [routerLink]="['classifier/video']">
+        <mat-card-content>
+          <div>
+            <mat-icon svgIcon="videocam"></mat-icon>
+          </div>
+          Use Webcam
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+.image-classifier__file-input {
+  display: none;
+}
+
+.image-classifier-container {
+  margin: 0 auto;
+}
+
+.image-classifier__card-wrap {
+  margin: 20px;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+
+  & mat-card {
+    max-width: 500px;
+  }
+}
+
+.image-classifier__no-data-text {
+  opacity: .26;
+  font-style: italic;
+}

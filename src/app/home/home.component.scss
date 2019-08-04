@@ -1,0 +1,32 @@
+.home__options-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.home__options-card-wrap {
+  color: white;
+  margin: 20px;
+  & mat-icon {
+    width: 128px;
+    height: 128px;
+  }
+
+  & mat-card:hover {
+    cursor: pointer;
+    color: white;
+    background-color:rgba(0,0,0,.87);
+    & mat-icon {
+      fill: white;
+    }
+  }
+
+  & mat-card-content {
+    text-align: center;
+  }
+}
+
+.home__options-btn-wrap {
+  margin-top: 20px;
+}
