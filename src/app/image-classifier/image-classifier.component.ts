@@ -1,31 +1,30 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import * as mobilenet from '@tensorflow-models/mobilenet';
-import { from } from 'rxjs';
+import { from, Subscription } from 'rxjs';
+import { ErrorService } from '../error.service';
 
 @Component({
   selector: 'app-image-classifier',
   templateUrl: './image-classifier.component.html',
   styleUrls: ['./image-classifier.component.scss']
 })
-export class ImageClassifierComponent implements OnInit {
+export class ImageClassifierComponent implements OnInit, OnDestroy {
   public imageSource: string;
   public model: mobilenet.MobileNet;
   public predictions: Array<{ className: string, probability: number }> = [];
+  public subscriptions$: Array<Subscription> = [];
   @ViewChild('userImage', { static: false }) userImageRef: ElementRef;
 
-  constructor(private snackBar: MatSnackBar) { }
+  constructor(private errorService: ErrorService) { }
 
   ngOnInit() {
-    from(mobilenet.load())
-      .subscribe({
-        next: (data: mobilenet.MobileNet) => {
-          this.model = data;
-        },
-        error: err => {
-          this.showError();
-        }
-      });
+    this.subscriptions$.push(
+      from(mobilenet.load())
+        .subscribe({
+          next: (data: mobilenet.MobileNet) => this.model = data,
+          error: () => this.errorService.displayError()
+        })
+    );
   }
 
   onFileSelected($event) {
@@ -36,15 +35,13 @@ export class ImageClassifierComponent implements OnInit {
       fileReader.onloadend = () => {
         this.imageSource = fileReader.result as string;
         setTimeout(() => {
-          from(this.model.classify(this.userImageRef.nativeElement))
-            .subscribe({
-              next: data => {
-                this.predictions = data;
-              },
-              error: err => {
-                this.showError();
-              }
-            });
+          this.subscriptions$.push(
+            from(this.model.classify(this.userImageRef.nativeElement))
+              .subscribe({
+                next: data => this.predictions = data,
+                error: () => this.errorService.displayError()
+              })
+          );
         });
       };
     }
@@ -55,12 +52,11 @@ export class ImageClassifierComponent implements OnInit {
     this.predictions = [];
   }
 
-  showError() {
-    this.snackBar.open(
-      'Something went wrong, please try again.',
-      'Error',
-      { duration: 3000 }
-    );
+  ngOnDestroy() {
+    this.subscriptions$.forEach(sub$ => {
+      if (sub$) {
+        sub$.unsubscribe();
+      }
+    });
   }
-
 }
