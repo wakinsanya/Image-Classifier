@@ -13,9 +13,15 @@
     height: 128px;
   }
 
+  & mat-card {
+    transition: all 200ms ease-in-out;
+  }
+
   & mat-card:hover {
     cursor: pointer;
     color: white;
+    transition: all 200ms ease-in-out;
+    transform: scale(1.05);
     background-color:rgba(0,0,0,.87);
     & mat-icon {
       fill: white;
