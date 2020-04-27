@@ -11,7 +11,7 @@
         </span>
         <mat-list role="list">
           <mat-list-item *ngFor="let entry of predictions" role="listitem">
-            {{ entry.className }} | confidence: {{ entry.probability | percentage }}
+            {{ entry.className }} | confidence: {{ (entry.probability * 100) | percentage }}
           </mat-list-item>
         </mat-list>
       </mat-card-content>

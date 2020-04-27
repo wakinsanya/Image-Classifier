@@ -33,7 +33,7 @@ export class VideoClassifierComponent implements AfterViewInit, OnDestroy {
             this.userVideoRef.nativeElement.srcObject = stream;
             setInterval(() => {
               this.classifyVideoStream();
-            }, 4000);
+            }, 2000);
           },
           error: () => this.errorService.displayError()
         })
@@ -57,10 +57,6 @@ export class VideoClassifierComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions$.forEach(sub$ => {
-      if (sub$) {
-        sub$.unsubscribe();
-      }
-    });
+    this.subscriptions$.forEach(sub$ => sub$.unsubscribe());
   }
 }
